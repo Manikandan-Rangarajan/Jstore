@@ -69,7 +69,7 @@ const Register = () => {
     const handleSubmit = (e)=>{ 
         e.preventDefault()
         useEffect(()=>{
-            navigate('/')
+            navigate('/home')
         })
         // Perform any validation or API call here before navigating
     }

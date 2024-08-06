@@ -25,11 +25,11 @@ function App() {
        <Projects />
        <Routes>
 
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/projects" element={<Projects />} />
-          <Route path="/logout" element={<Logout />} />
+          <Route path="/" element={<Logout />} />
                 {/* redirects unmatched path to home
                 <Route path="*" element={<Navigate to="/" />} />  */}
         </Routes>

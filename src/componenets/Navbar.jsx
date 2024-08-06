@@ -7,25 +7,25 @@ const Navbar = () => {
             <div className="container mx-auto flex justify-between items-center">
                 {/* Left side (Jstore) */}
                 <div className="text-white text-2xl font-bold">
-                    <Link to="/Home" className="text-white hover:text-gray-400">Jstore</Link>
+                    <Link to="/" className="text-white hover:cursor-pointer hover:text-gray-400">Jstore</Link>
                 </div>
 
                 {/* Right side (Links) */}
                 <ul className="flex space-x-6">
                     <li>
-                        <Link to="/AboutUs" className="text-white hover:text-gray-400">About Us</Link>
+                        <Link to="/about-us" className="text-white hover:cursor-pointer hover:text-gray-400">About Us</Link>
                     </li>
                     <li>
-                        <Link to="/Home" className="text-white hover:text-gray-400">Home</Link>
+                        <Link to="/" className="text-white hover:cursor-pointer hover:text-gray-400">Home</Link>
                     </li>
                     <li>
-                        <Link to="/Pricing" className="text-white hover:text-gray-400">Pricing</Link>
+                        <Link to="/pricing" className="text-white hover:cursor-pointer hover:text-gray-400">Pricing</Link>
                     </li>
                     <li>
-                        <Link to="/Projects" className="text-white hover:text-gray-400">Projects</Link>
+                        <Link to="/projects" className="text-white hover:cursor-pointer hover:text-gray-400">Projects</Link>
                     </li>
                     <li>
-                        <Link to="/" className="text-white hover:text-gray-400">Logout</Link>
+                        <Link to="/" className="text-white hover:cursor-pointer hover:text-gray-400">Logout</Link>
                     </li>
                 </ul>
             </div>

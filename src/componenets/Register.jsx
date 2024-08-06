@@ -69,7 +69,7 @@ const Register = () => {
     const handleSubmit = (e)=>{ 
         e.preventDefault()
         useEffect(()=>{
-            navigate('/Home')
+            navigate('/')
         })
         // Perform any validation or API call here before navigating
     }
@@ -207,9 +207,9 @@ const Register = () => {
                 </button>
             </form>
         </div>
-        <Routes>
+        {/* <Routes>
             <Route path='/' element={<Home />} />
-        </Routes>
+        </Routes> */}
      </>
     );
 }

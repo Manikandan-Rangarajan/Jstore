@@ -2,6 +2,8 @@ import { useRef, useState, useEffect } from "react";
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faInfoCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { Navigate, Router, useNavigate, Routes, Route} from "react-router-dom";
+import Home from "./Home";
 
 const Register = () => {
     const USER_REGX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/; // Corrected the regular expression
@@ -61,11 +63,23 @@ const Register = () => {
         setErrMsg('');
     }, [user, pwd, matchpwd]);
 
+
+    const navigate = useNavigate()
+
+    const handleSubmit = (e)=>{ 
+        e.preventDefault()
+        useEffect(()=>{
+            navigate('/Home')
+        })
+        // Perform any validation or API call here before navigating
+    }
+
     return (
+        <> 
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-xl">
             <p ref={errRef} className={errMsg ? "errmsg" : "hidden"} aria-live="assertive">{errMsg}</p>
             <h1 className=" text-black font-bold m-[30px] p-[10px] ">Register</h1>
-            <form className=" min-w-6 min-h-19 flex flex-col justify-center items-center text-gray-600 bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <form onSubmit={handleSubmit} className=" min-w-6 min-h-19 flex flex-col justify-center items-center text-gray-600 bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
                
                 <label className="font-bold m-[30px] mb-[0px]" htmlFor="username">Username:
                     <span className={validName ? "valid" : "hidden"}>
@@ -187,11 +201,16 @@ const Register = () => {
                     Letters, numbers, underscores, hyphens allowed.
                 </p> */}
 
-                <button className="bg-black text-white font-bold py-2 px-4 my-5 rounded hover:cursor-pointer hover:bg-green-400 hover:text-black" disabled={!validName || !validPwd || !validMatch ? true : false}>
+                <button type="submit"
+                  className="bg-black text-white font-bold py-2 px-4 my-5 rounded hover:cursor-pointer hover:bg-green-400 hover:text-black" disabled={!validName || !validPwd || !validMatch ? true : false}>
                     Sign Up
                 </button>
             </form>
         </div>
+        <Routes>
+            <Route path='/' element={<Home />} />
+        </Routes>
+     </>
     );
 }
 

@@ -18,13 +18,13 @@ function App() {
       <div className='min-h-screen flex flex-col items-center justify-center bg-gray-100 text-xl'>
          <Navbar/>
         <Register className="justify-center items-center"/>
-       </div>
-       <Home />
+        <Home />
        <AboutUs />
        <Pricing />
        <Projects />
+       </div>
        <Routes>
-
+       
           <Route path="/home" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/pricing" element={<Pricing />} />

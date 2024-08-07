@@ -15,7 +15,7 @@ function App() {
   return (
     <Router>
       
-      <div className='min-h-screen flex flex-col items-center justify-center bg-gray-100 text-xl'>
+      <div className='min-h-screen flex flex-col items-center justify-center bg-gray-100 text-xl overflow-y-hidden'>
          <Navbar/>
         <Register className="justify-center items-center"/>
         <Home />
@@ -25,11 +25,12 @@ function App() {
        </div>
        <Routes>
        
+          <Route path="/" element={<Logout />} />
           <Route path="/home" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/projects" element={<Projects />} />
-          <Route path="/" element={<Logout />} />
+          <Route path="/register" element={<Register />} />
                 {/* redirects unmatched path to home
                 <Route path="*" element={<Navigate to="/" />} />  */}
         </Routes>

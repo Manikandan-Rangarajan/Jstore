@@ -2,8 +2,8 @@ import { useRef, useState, useEffect } from "react";
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faInfoCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Navigate, Router, useNavigate, Routes, Route} from "react-router-dom";
-import Home from "./Home";
+import { useNavigate} from "react-router-dom";
+
 
 const Register = () => {
     const USER_REGX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/; // Corrected the regular expression
@@ -68,9 +68,9 @@ const Register = () => {
 
     const handleSubmit = (e)=>{ 
         e.preventDefault()
-        useEffect(()=>{
-            navigate('/home')
-        })
+        // useEffect(()=>{
+        //     navigate('/home')
+        // })
         // Perform any validation or API call here before navigating
     }
 

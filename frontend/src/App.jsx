@@ -8,6 +8,8 @@ import Pricing from './componenets/Pricing'
 import AboutUs from './componenets/AboutUs'
 import Home from './componenets/Home'
 import Logout from './componenets/Logout'
+import React from 'react';
+
 
 function App() {
   const [count, setCount] = useState(0)

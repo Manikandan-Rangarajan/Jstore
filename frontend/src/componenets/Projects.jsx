@@ -1,11 +1,10 @@
 import React from 'react'
 
-function Pricing() {
+function Projects() {
   return (
     <div>
-      
     </div>
   )
 }
 
-export default Pricing
+export default Projects

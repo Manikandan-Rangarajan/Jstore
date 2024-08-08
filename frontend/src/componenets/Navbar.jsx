@@ -4,7 +4,7 @@ import Joker from '../assets/Joker.png'
 
 const Navbar = () => {
     return (
-        <nav className="bg-gray-800 p-4 shadow-md w-full">
+        <nav className="bg-gray-800 p-4 shadow-md w-full flex align-top mt-0">
             <div className="container mx-auto flex justify-between items-center">
                 {/* Left side (Jstore) */}
                 <div className="text-white text-2xl font-bold flex justify-between items-center">
@@ -27,7 +27,10 @@ const Navbar = () => {
                         <Link to="/projects" className="text-white hover:cursor-pointer hover:text-gray-400">Projects</Link>
                     </li>
                     <li>
-                        <Link to="/" className="text-white hover:cursor-pointer hover:text-gray-400">Logout</Link>
+                        <Link to="/logout" className="text-white hover:cursor-pointer hover:text-gray-400">Logout</Link>
+                    </li>
+                    <li>
+                        <Link to="/" className="text-white hover:cursor-pointer hover:text-gray-400">Register</Link>
                     </li>
                 </ul>
             </div>

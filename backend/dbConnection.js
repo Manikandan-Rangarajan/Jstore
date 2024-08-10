@@ -1,15 +1,20 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import { type } from "os";
 
-// Construct the MongoDB URI
-const uri = `mongodb://${localhost}:${27017}/${Jstore}`;
+mongoose.connect("mongodb://localhost:27017/Jstore")
+.then(() => console.log("Connected to MongoDB..."))
+.catch(err => console.error("Could not connect to MongoDB...", err));
 
-// Function to connect to the database
-export async function connectDB() {
-  try {
-    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log("Connected successfully to MongoDB");
-  } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
-    process.exit(1);
-  }
-}
+const userData = new mongoose.Schema({
+    user:{
+        type: String,
+        required: true
+    },
+    password:{
+        type: String,
+        required: true
+    }
+})
+
+const collection = mongoose.model("collection", userData)
+export default collection

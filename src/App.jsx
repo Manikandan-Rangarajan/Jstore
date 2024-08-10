@@ -17,25 +17,20 @@ function App() {
   return (
     <Router>
       
-      <div className='min-h-screen flex flex-col items-center justify-center bg-gray-100 text-xl overflow-y-hidden'>
          <Navbar/>
-        <Register className="justify-center items-center"/>
-        <Home />
-       <AboutUs />
-       <Pricing />
-       <Projects />
-       </div>
+      <div className='min-h-screen flex flex-col items-center justify-center bg-gray-100 text-xl overflow-y-hidden'>
        <Routes>
        
-          <Route path="/" element={<Logout />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/home" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/projects" element={<Projects />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Register />} />
                 {/* redirects unmatched path to home
                 <Route path="*" element={<Navigate to="/" />} />  */}
         </Routes>
+       </div>
     </Router>
   )
 }

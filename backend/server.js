@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import collection from "./dbConnection.js";
+import axios from 'axios';
 
 // Initialize Express app
 const app = express();
@@ -34,16 +35,17 @@ app.post('/signup', async (req, res) => {
   };
 
   try {
-    const check = await collection.findOne({ user: user });
+    // Check if the user already exists
+    const check = await collection.findOne({ user: user, password:pwd });
 
     if (check) {
-      res.json("exists");
+      res.status(409).json({ message: "User already exists" });
     } else {
-      res.json("not exists");
       await collection.insertMany([data]);
+      res.status(201).json({ message: "User created successfully" });
     }
   } catch (e) {
-    res.json("not exists");
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 

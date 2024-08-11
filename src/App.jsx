@@ -9,6 +9,7 @@ import AboutUs from './componenets/AboutUs'
 import Home from './componenets/Home'
 import Logout from './componenets/Logout'
 import React from 'react';
+import SignIn from './componenets/SignIn'
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/" element={<Register />} />
+          <Route path="/sign-in" element={<SignIn />} />
                 {/* redirects unmatched path to home
                 <Route path="*" element={<Navigate to="/" />} />  */}
         </Routes>

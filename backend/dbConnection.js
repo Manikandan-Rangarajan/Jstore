@@ -8,7 +8,8 @@ mongoose.connect("mongodb://localhost:27017/Jstore")
 const userData = new mongoose.Schema({
     user:{
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password:{
         type: String,
@@ -16,5 +17,7 @@ const userData = new mongoose.Schema({
     }
 })
 
+
 const collection = mongoose.model("collection", userData)
+collection.createIndexes();
 export default collection

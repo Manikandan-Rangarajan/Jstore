@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Panda from '../assets/Panda.jpg'
 
-const Register = () => {
+const SignIn = () => {
+
+
     const USER_REGX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
     const CLASS_REGX3 = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
     const PASS_REGX2 = /^(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -62,17 +64,12 @@ const Register = () => {
             const response = await axios.post('http://localhost:5000/signup', { user, pwd });
             
             if (response.status === 201) {
-              alert('Alert user does not exists.Click ok to Sign-In');
-              navigate('/sign-in')
+              alert('User created successfully');
+              navigate('/home')
             }
           } catch (error) {
-            if (error.response && error.response.status === 409) {
-              alert('User exists');
-              navigate('/home')
-            } else {
               alert('Username Taken');
               console.error(error);
-            }
           }
     }
 
@@ -163,7 +160,7 @@ const Register = () => {
             </form>
         </div>
      </>
-    );
+  );
 }
 
-export default Register;
+export default SignIn

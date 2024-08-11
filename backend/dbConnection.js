@@ -1,9 +1,15 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import { type } from "os";
 
-mongoose.connect("mongodb://localhost:27017/Jstore")
-.then(() => console.log("Connected to MongoDB..."))
-.catch(err => console.error("Could not connect to MongoDB...", err));
+dotenv.config()
+
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => console.log('Connected to MongoDB...'))
+.catch(err => console.error('Could not connect to MongoDB...', err));
 
 const userData = new mongoose.Schema({
     user:{
@@ -17,7 +23,18 @@ const userData = new mongoose.Schema({
     }
 })
 
+const nameSchema = new mongoose.Schema({
+    
+    Sname: String,
+    description: String,
+    price: Number,
+    zip_url: String
+});
+
+const names = mongoose.model("names", nameSchema);
+names.createIndexes();
+
 
 const collection = mongoose.model("collection", userData)
 collection.createIndexes();
-export default collection
+export { names, collection }

@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import collection from "./dbConnection.js";
+import { collection, names } from "./dbConnection.js";
 import axios from 'axios';
 
 // Initialize Express app
@@ -25,6 +25,17 @@ app.use(express.static(path.join(__dirname, '../dist')));
 app.get('/', cors(), (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
+
+app.get('/api/names', async (req, res) => {
+  try {
+    const names = await Name.find(); // Retrieve all documents from the 'Name' collection
+    res.json(names); // Send the data as JSON to the frontend
+  } catch (err) {
+    console.error('Error fetching data:', err); // Log detailed error
+    res.status(500).send('Server error');
+  }
+});
+
 
 app.post('/signup', async (req, res) => {
   const { user, pwd } = req.body;
@@ -53,6 +64,7 @@ app.post('/signup', async (req, res) => {
 app.use((req, res) => {
   res.status(404).send('404 - Not Found');
 });
+
 
 // Start the server
 app.listen(port, () => {

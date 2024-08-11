@@ -21,8 +21,8 @@ function home() {
         </div>
         <div  className={`w-[650px] h-[400px] m-[20px] backdrop-blur-xxl bg-gray-800 rounded-lg shadow-lg flex flex-col items-center justify-center text-lg text-orange-200 text-2xl transform hover:rotate-x-12 hover:rotate-y-12 transition-transform duration-300`}>
         <ul className='opacity-100 font-bold text-2xl'>
-            <li><p>At Jstore, we understand the value of practical experience in education. That's why we offer a range of products that cater to different academic requirements. Our mini-projects, priced at just 50 INR,
-             are perfect for students looking for quick, impactful solutions. For those in need of more comprehensive projects, we offer full projects at an unbeatable price of 300 INR. Each product
+            <li><p>At Jstore, we understand the value of practical experience in education. That's why we offer a range of products that cater to different academic requirements. Our mini-project's code and user documentaion, priced at just 100 INR,
+             are perfect for students looking for quick, impactful solutions. For those in need of more comprehensive projects, we offer full project's code and user documentaion at an unbeatable price of 350 INR. Each product
              is designed to not only meet but exceed academic standards, ensuring that you stand out in your studies.</p></li>
           </ul>
         </div>

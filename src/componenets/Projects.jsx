@@ -1,9 +1,14 @@
 import React from 'react'
 import './projects.css'
 import new_collections from '../assets/P_assets/new_collections.js'
+import Navbar from './Navbar'
+import Panda from '../assets/Panda.jpg'
+
 function Projects() {
   return (
-    <div className="product-grid">
+    <div  style={{ backgroundImage: `url(${Panda})`}} className="min-h-screen w-full bg-no-repeat bg-cover" >
+    <Navbar/>
+    <div className="product-grid ">
       {new_collections.map((product) => (
         <div className="product-card" key={product.id}>
           <img src={product.image} alt={product.name} className="product-image" />
@@ -14,6 +19,7 @@ function Projects() {
           </p>
         </div>
       ))}
+    </div>
     </div>
   );
 };

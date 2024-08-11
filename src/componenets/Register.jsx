@@ -1,19 +1,16 @@
 import { useRef, useState, useEffect } from "react";
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faInfoCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { text } from "body-parser";
-import e from "express";
-
+import Panda from '../assets/Panda.jpg'
 
 const Register = () => {
-    const USER_REGX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/; // Corrected the regular expression
-    const CLASS_REGX3 = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/; // Corrected the regular expression
+    const USER_REGX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
+    const CLASS_REGX3 = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
     const PASS_REGX2 = /^(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-    const userRef = useRef(); // Correct reference
+    const userRef = useRef(); 
     const errRef = useRef();
 
     const [user, setUser] = useState('');
@@ -26,83 +23,66 @@ const Register = () => {
 
     const [pwd, setPwd] = useState('');
     const [validPwd, setValidPwd] = useState(false);
-    const [pwdfocus, setPwdFocus] = useState(false);
+    const [pwdFocus, setPwdFocus] = useState(false);
 
-    const [matchpwd, setMatchPwd] = useState('');
+    const [matchPwd, setMatchPwd] = useState('');
     const [validMatch, setValidMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
 
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
-    const history = useNavigate()
+    const navigate = useNavigate();
 
     useEffect(() => {
-        userRef.current.focus(); // Set focus to username input on component mount
+        userRef.current.focus(); 
     }, []);
 
     useEffect(() => {
-        const result = USER_REGX.test(user);
-        console.log(result);
-        console.log(user);
-        setValidName(result);
+        setValidName(USER_REGX.test(user));
     }, [user]);
 
     useEffect(() => {
-        const result = CLASS_REGX3.test(user);
-        console.log(result);
-        console.log(user);
-        setValidName(result);
-    }, [user]);
+        setValidClassName(CLASS_REGX3.test(className));
+    }, [className]);
 
     useEffect(() => {
-        const result = PASS_REGX2.test(pwd);
-        console.log(result);
-        console.log(pwd);
-        setValidPwd(result);
-        const match = pwd === matchpwd;
-        setValidMatch(match);
-    }, [pwd, matchpwd]);
+        setValidPwd(PASS_REGX2.test(pwd));
+        setValidMatch(pwd === matchPwd);
+    }, [pwd, matchPwd]);
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd, matchpwd]);
+    }, [user, pwd, matchPwd]);
 
-    const handleSubmit = async (e)=>{ 
-        e.preventDefault()
+    const handleSubmit = async (e) => { 
+        e.preventDefault();
 
-        try{
-
-            await axios.post("http://localhost:5000/",{
-                    user,pwd
-            })
-            .then(res=>{
-                if(res.data="exists"){
-                    history("/home")
-                }
-            })
+        try {
+            const response = await axios.post("http://localhost:5000/signup", { user, pwd });
+            if (response.data === "exists") {
+                navigate("/home");
+            } else {
+                setSuccess(true);
+            }
+        } catch (err) {
+            console.log(err);
+            setErrMsg("Registration Failed");
         }
-        catch(e){
-            console.log(e)
-        }
-        // useEffect(()=>{
-        //     navigate('/home')
-        // })
-        // Perform any validation or API call here before navigating
     }
 
     return (
         <> 
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-xl">
             <p ref={errRef} className={errMsg ? "errmsg" : "hidden"} aria-live="assertive">{errMsg}</p>
-            <h1 className=" text-black font-bold m-[30px] p-[10px] ">Register</h1>
-            <form action="POST" className=" min-w-6 min-h-19 flex flex-col justify-center items-center text-gray-600 bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h1 className="text-black font-bold m-[30px] p-[10px]">Register</h1>
+            <form onSubmit={handleSubmit} className="min-w-6 min-h-19 flex flex-col justify-center items-center text-gray-600 bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
                
                 <label className="font-bold m-[30px] mb-[0px]" htmlFor="username">Username:
                     <span className={validName ? "valid" : "hidden"}>
-                        <FontAwesomeIcon icon = {faCheck}/>
+                        <FontAwesomeIcon icon={faCheck}/>
                     </span>
-                    <span className={!validName || !user ? "invalid" : "hidden"}><FontAwesomeIcon icon = {faTimes}/></span>
+                    <span className={!validName || !user ? "invalid" : "hidden"}><FontAwesomeIcon icon={faTimes}/></span>
                 </label>
                 <input
                     type="text"
@@ -119,16 +99,15 @@ const Register = () => {
                     className="border border-gray-600 rounded"
                 />
                 <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "hidden" }>
-                <FontAwesomeIcon icon = {faInfoCircle}/>
+                <FontAwesomeIcon icon={faInfoCircle}/>
                     4 to 24 characters.<br />
                     Must begin with a letter.<br />
                     Letters, numbers, underscores, hyphens allowed.
                 </p>
 
-             
                 <label className="font-bold m-[30px] mb-[0px]" htmlFor="password">Password:
-                    <span className={validPwd ? "valid" : "hidden"}><FontAwesomeIcon icon = {faCheck}/></span>
-                    <span className={validPwd || !pwd ? "hidden" : "invalid"}><FontAwesomeIcon icon = {faTimes}/></span>
+                    <span className={validPwd ? "valid" : "hidden"}><FontAwesomeIcon icon={faCheck}/></span>
+                    <span className={validPwd || !pwd ? "hidden" : "invalid"}><FontAwesomeIcon icon={faTimes}/></span>
                 </label>
                 <input
                     type="password"
@@ -142,18 +121,17 @@ const Register = () => {
                     placeholder="Password"
                     className="border border-gray-600 rounded"
                 />
-                <p id="pwdnote" className={pwdfocus && !validPwd ? "instructions" : "hidden"}>
-                <FontAwesomeIcon icon = {faInfoCircle}/>
+                <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "hidden"}>
+                <FontAwesomeIcon icon={faInfoCircle}/>
                     8 to 24 characters.<br />
                     Must include uppercase and lowercase letters, a number, and a special character.<br />
                     Allowed special characters: !@#$%
                 </p>
 
-                
                 <label className="font-bold m-[30px] mb-[0px]" htmlFor="confirm_pwd">Confirm Password:
-                    <span className={validMatch && matchpwd ? "valid" : "hidden"}>
-                    <FontAwesomeIcon icon = {faInfoCircle}/><FontAwesomeIcon icon = {faCheck}/></span>
-                    <span className={validMatch || !matchpwd ? "hidden" : "invalid"}><FontAwesomeIcon icon = {faTimes}/></span>
+                    <span className={validMatch && matchPwd ? "valid" : "hidden"}>
+                    <FontAwesomeIcon icon={faCheck}/></span>
+                    <span className={validMatch || !matchPwd ? "hidden" : "invalid"}><FontAwesomeIcon icon={faTimes}/></span>
                 </label>
                 <input
                     type="password"
@@ -164,69 +142,21 @@ const Register = () => {
                     aria-describedby="confirmnote"
                     onFocus={() => setMatchFocus(true)}
                     onBlur={() => setMatchFocus(false)}
-                    placeholder="Password"
+                    placeholder="Confirm Password"
                     className="border border-gray-600 rounded"
                 />
                 <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "hidden"}>
                     Must match the first password input field.
                 </p>
 
-                {/* <label className="font-bold m-[30px] mb-[0px]" htmlFor="confirm_pwd">Department:
-                    <span className={validMatch && matchpwd ? "valid" : "hidden"}>
-                    <FontAwesomeIcon icon = {faInfoCircle}/><FontAwesomeIcon icon = {faCheck}/></span>
-                    <span className={validMatch || !matchpwd ? "hidden" : "invalid"}><FontAwesomeIcon icon = {faTimes}/></span>
-                </label>
-                <input
-                    type="text"
-                    id="confirm_pwd"
-                    onChange={(e) => setMatchPwd(e.target.value)}
-                    required
-                    aria-invalid={validMatch ? "false" : "true"}
-                    aria-describedby="confirmnote"
-                    onFocus={() => setMatchFocus(true)}
-                    onBlur={() => setMatchFocus(false)}
-                    placeholder="Password"
-                    className="border border-gray-600 rounded"
-                />
-                <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "hidden" }>
-                <FontAwesomeIcon icon = {faInfoCircle}/>
-                    4 to 24 characters.<br />
-                    Must begin with a letter.<br />
-                    Letters, numbers, underscores, hyphens allowed.
-                </p>
-                <label className="font-bold m-[30px] mb-[0px]" htmlFor="confirm_pwd">Section:
-                    <span className={validClassName ? "valid" : "hidden"}>
-                    <FontAwesomeIcon icon = {faInfoCircle}/><FontAwesomeIcon icon = {faCheck}/></span>
-                    <span className={validClassName ? "hidden" : "invalid"}><FontAwesomeIcon icon = {faTimes}/></span>
-                </label>
-                <input
-                    type="password"
-                    id="confirm_pwd"
-                    onChange={(e) => setMatchPwd(e.target.value)}
-                    required
-                    aria-invalid={validMatch ? "false" : "true"}
-                    aria-describedby="confirmnote"
-                    onFocus={() => setMatchFocus(true)}
-                    onBlur={() => setMatchFocus(false)}
-                    placeholder="Password"
-                    className="border border-gray-600 rounded"
-                />
-                 <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "hidden" }>
-                <FontAwesomeIcon icon = {faInfoCircle}/>
-                    4 to 24 characters.<br />
-                    Must begin with a letter.<br />
-                    Letters, numbers, underscores, hyphens allowed.
-                </p> */}
-
-                <input type="submit" onClick={handleSubmit(e)}
-                  className="bg-black text-white font-bold py-2 px-4 my-5 rounded hover:cursor-pointer hover:bg-green-400 hover:text-black" disabled={!validName || !validPwd || !validMatch ? true : false}>
+                <button
+                  type="submit"
+                  className="bg-black text-white font-bold py-2 px-4 my-5 rounded hover:cursor-pointer hover:bg-green-400 hover:text-black" 
+                  disabled={!validName || !validPwd || !validMatch}>
                     Sign Up
-                </input>
+                </button>
             </form>
         </div>
-        {/* <Routes>
-            <Route path='/' element={<Home />} />
-        </Routes> */}
      </>
     );
 }

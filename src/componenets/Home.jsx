@@ -1,5 +1,7 @@
 import React from 'react'
 import Jokerbg from '../assets/Jokerbackground-modified.png'
+import Navbar from './Navbar'
+import Panda from '../assets/Panda.jpg'
 
 function home() {
 
@@ -7,10 +9,10 @@ function home() {
 
   return (
     <>
-       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-center">
-      <h1 className="text-5xl font-bold mb-8 text-gray-800">Jstore</h1>
-      <div className="flex flex-col flex-wrap gap-6 justify-center">
-        <div style={{ backgroundImage: `url(${Jokerbg})` }} className={`w-[650px] h-[400px] m-[20px] backdrop-blur-xxl bg-cover bg-center rounded-lg shadow-lg flex flex-col items-center justify-center text-lg text-white text-2xl transform hover:rotate-x-12 hover:rotate-y-12 transition-transform duration-300`}>
+     <Navbar/>
+       <div style={{ backgroundImage: `url(${Panda})` }} className="bg-no-repeat bg-cover flex flex-col items-center justify-between min-h-screen bg-gray-100 text-center">
+      <div className="flex flex-wrap gap-6 justify-center">
+        <div style={{ backgroundImage: `url(${Jokerbg})` }} className={`w-[650px] h-[400px] m-[20px] backdrop-blur-xxl bg-cover bg-center rounded-lg shadow-lg flex flex-wrap items-center justify-center text-lg text-white text-2xl transform hover:rotate-x-12 hover:rotate-y-12 transition-transform duration-300`}>
           <ul className='opacity-100 font-extrabold text-2xl'>
             <li><p>Welcome to Jstore, your one-stop destination for affordable and innovative projects tailored to your academic needs. We specialize in providing high-quality mini-projects and full-scale projects
              that are crafted with precision and care. Whether you're looking to get 

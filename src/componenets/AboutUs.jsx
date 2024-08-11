@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './AboutUs.css';
+import Navbar from './Navbar'
+import Panda from '../assets/Panda.jpg'
 
 const ProfileDownload = () => {
   const [profileImage, setProfileImage] = useState('');
@@ -20,8 +22,10 @@ const ProfileDownload = () => {
   };
 
   return (
-    <div className="container">
-      <div className="profile-image-container">
+    <div  style={{ backgroundImage: `url(${Panda})`}} className="min-h-screen w-full bg-no-repeat bg-cover" >
+    <Navbar/>
+    <div className="cont">
+      <div className="imgcont">
         {profileImage ? (
           <img src={profileImage} alt="Profile" className="profile-image" />
         ) : (
@@ -31,6 +35,7 @@ const ProfileDownload = () => {
       <button className="download-button" onClick={handleDownload}>
         Download Profile Zip
       </button>
+    </div>
     </div>
   );
 };

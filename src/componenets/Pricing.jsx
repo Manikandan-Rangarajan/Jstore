@@ -2,6 +2,8 @@
 
 import React from 'react';
 import QRCode from 'qrcode.react';
+import Navbar from './Navbar'
+import Panda from '../assets/Panda.jpg'
 
 const Pricing = () => {
   const upiID = 'username270904-1@okaxis'; // Replace with actual UPI ID
@@ -12,8 +14,10 @@ const Pricing = () => {
   const upiLink = `upi://pay?pa=${upiID}&pn=${payeeName}&am=${amount}&tn=${message}`;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm text-center">
+    <>
+    <Navbar/>
+    <div  style={{ backgroundImage: `url(${Panda})` }} className="min-h-screen w-full bg-no-repeat bg-cover overflow-hidden flex items-center justify-center bg-gray-100 p-4">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm text-center flex flex-col justify-center items-center">
         <h1 className="text-2xl font-bold mb-4">Pay with UPI</h1>
         <QRCode value={upiLink} size={200} />
         <div className="mt-4">
@@ -24,6 +28,7 @@ const Pricing = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

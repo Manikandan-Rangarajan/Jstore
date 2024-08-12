@@ -12,7 +12,8 @@
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 16px;
-    max-width: 200px;
+    max-width: 250px;
+    min-height: 350px;
     transition: transform 0.3s, box-shadow 0.3s;
     overflow: hidden;
     background-color: #fff;

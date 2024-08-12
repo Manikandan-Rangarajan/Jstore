@@ -28,7 +28,7 @@ function Projects() {
   return (
     <div style={{ backgroundImage: `url(${Panda})` }} className="min-h-screen w-full bg-no-repeat bg-cover">
       <Navbar />
-      <div className="product-grid w-5 h-5">
+      <div className="product-grid">
         {Array.isArray(names) ? (
           names.map((name) => (
             <div className="product-card" key={name._id}>

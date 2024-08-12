@@ -5,10 +5,34 @@ import new_collections from '../assets/P_assets/new_collections.js'
 import Navbar from './Navbar'
 import Panda from '../assets/Panda.jpg'
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 function Projects() {
 
   const [names, setNames] = useState([]);
+  const navigate = useNavigate();
+
+  const User = "exampleUser"
+
+  const handleprice = async (name) => {
+    try {
+      const Sname = name.Sname
+      const description = name.description
+      const price = name.price
+      // Send a POST request to save the chosen Sname and Description
+      await axios.post('http://localhost:5000/pricing/api', {
+        Sname: Sname,
+        description: description,
+        price: price,
+        User: User,
+    });
+
+      // Navigate to the pricing page
+      navigate('/pricing');
+    } catch (error) {
+      console.error('There was an error writing the data!', error);
+    }
+  };
 
   useEffect(() => {
       // Fetch data from the API
@@ -31,10 +55,11 @@ function Projects() {
       <div className="product-grid">
         {Array.isArray(names) ? (
           names.map((name) => (
-            <div className="product-card" key={name._id}>
-              <h3>{name.Sname}</h3>
+            <div className="product-card bg-orange-200 flex flex-col justify-center items-center" key={name._id}>
+              <h3 className='font-extrabold text-2xl font-mono'>{name.Sname}</h3>
               <p>{name.description}</p>
-              <p>Price: {name.price} Rs</p>
+              <p className='font-bold'>Price: {name.price} Rs</p>
+              <button onClick={() => handleprice(name)} className='text-white bg-black rounded-lg w-[100px] h-[50px] hover:text-orange-200 hover:bg-white'>Select</button>
             </div>
           ))
         ) : (

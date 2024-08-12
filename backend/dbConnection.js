@@ -15,12 +15,21 @@ const userData = new mongoose.Schema({
     user:{
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     password:{
         type: String,
-        required: true
-    }
+        required: true,
+    },
+    Sname:{
+        type: String,
+    },
+    description:{
+        type: String,
+    },
+    price:{ 
+        type: Number,
+     }
 })
 
 const nameSchema = new mongoose.Schema({

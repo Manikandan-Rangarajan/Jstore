@@ -54,7 +54,6 @@ app.post('/signup', async (req, res) => {
 
     if (check) {
       res.status(409).json({ message: "User already exists" });
-      loggedInUsers[check._id] = { username: user, password: pwd };
     } else {
       res.status(201).json({ message: "User does not exists" });
     }
@@ -77,37 +76,16 @@ app.post('/sign-in', async (req, res) => {
     const check = await collection.findOne({ user: user, password:pwd });
 
     if (check) {
-      loggedInUsers[check._id] = { username: user, password: pwd };
+      
       res.status(409).json({ message: "User already exists" });
     } else {
       await collection.insertMany([data]);
-      loggedInUsers[check._id] = { username: user, password: pwd };
       res.status(201).json({ message: "User created successfully" });
     }
   } catch (e) {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
-// Fetch Projects for the logged-in user
-app.get('/projects/api/users', async (req, res) => {
-  const { userId } = req.query;
-
-  try {
-    const userSession = loggedInUsers[userId];
-    if (!userSession) {
-      return res.status(401).json({ message: "User not logged in" });
-    }
-
-    // Fetch projects related to the logged-in user
-    const projects = await names.find({ userId: userId });
-    res.json(projects);
-  } catch (err) {
-    console.error('Error fetching data:', err); // Log detailed error
-    res.status(500).send('Server error');
-  }
-});
-
 
 app.post('/pricing/api', async (req, res) => {
   const { Sname, description } = req.body;

@@ -70,7 +70,7 @@ const Register = () => {
               alert('User exists');
               navigate('/home')
             } else {
-              alert('Username Taken');
+              alert('Error Signning In');
               console.error(error);
             }
           }

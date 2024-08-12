@@ -12,7 +12,7 @@ function Projects() {
 
   useEffect(() => {
       // Fetch data from the API
-      axios.get('/api/names')
+      axios.get('/projects/api')
       .then(response => {
           console.log('API Response:', response.data); // Check the structure of the response
           setNames(response.data);
@@ -28,7 +28,7 @@ function Projects() {
   return (
     <div style={{ backgroundImage: `url(${Panda})` }} className="min-h-screen w-full bg-no-repeat bg-cover">
       <Navbar />
-      <div className="product-grid">
+      <div className="product-grid w-5 h-5">
         {Array.isArray(names) ? (
           names.map((name) => (
             <div className="product-card" key={name._id}>

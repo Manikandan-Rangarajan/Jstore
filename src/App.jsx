@@ -10,6 +10,7 @@ import Home from './componenets/Home'
 import Logout from './componenets/Logout'
 import React from 'react';
 import SignIn from './componenets/SignIn'
+import Dummy from './componenets/Dummy'
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="/projects" element={<Projects />} />
           <Route path="/" element={<Register />} />
           <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/api/names" element={<Dummy />} />
                 {/* redirects unmatched path to home
                 <Route path="*" element={<Navigate to="/" />} />  */}
         </Routes>

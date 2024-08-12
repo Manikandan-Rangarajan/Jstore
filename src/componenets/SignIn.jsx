@@ -61,7 +61,7 @@ const SignIn = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:5000/signup', { user, pwd });
+            const response = await axios.post('http://localhost:5000/sign-in', { user, pwd });
             
             if (response.status === 201) {
               alert('User created successfully');

@@ -5,6 +5,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { collection, names } from "./dbConnection.js";
 import axios from 'axios';
+import dotenv from 'dotenv'
 
 // Initialize Express app
 const app = express();
@@ -13,6 +14,8 @@ const port = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+
+dotenv.config()
 
 // Define __dirname for static file serving
 const __filename = fileURLToPath(import.meta.url);
@@ -26,10 +29,10 @@ app.get('/', cors(), (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-app.get('/api/names', async (req, res) => {
+app.get('/projects/api', async (req, res) => {
   try {
-    const names = await Name.find(); // Retrieve all documents from the 'Name' collection
-    res.json(names); // Send the data as JSON to the frontend
+    const name = await names.find(); // Retrieve all documents from the 'Name' collection
+    res.json(name); // Send the data as JSON to the frontend
   } catch (err) {
     console.error('Error fetching data:', err); // Log detailed error
     res.status(500).send('Server error');
@@ -38,6 +41,29 @@ app.get('/api/names', async (req, res) => {
 
 
 app.post('/signup', async (req, res) => {
+  const { user, pwd } = req.body;
+
+  const data = {
+    user: user,
+    password: pwd,
+  };
+
+  try {
+    // Check if the user already exists
+    const check = await collection.findOne({ user: user, password:pwd });
+
+    if (check) {
+      res.status(409).json({ message: "User already exists" });
+    } else {
+      res.status(201).json({ message: "User does not exists" });
+    }
+  } catch (e) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+
+app.post('/sign-in', async (req, res) => {
   const { user, pwd } = req.body;
 
   const data = {

@@ -21,16 +21,20 @@ const userData = new mongoose.Schema({
         type: String,
         required: true,
     },
-    Sname:{
-        type: String,
-    },
-    description:{
-        type: String,
-    },
-    price:{ 
-        type: Number,
-     }
+    // Reference to nameSchema
+    projects: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Name'
+    }]
 })
+
+const projectSchema = new mongoose.Schema({
+    
+    Sname: String,
+    description: String,
+    price: Number,
+    User: String
+});
 
 const nameSchema = new mongoose.Schema({
     
@@ -43,7 +47,10 @@ const nameSchema = new mongoose.Schema({
 const names = mongoose.model("names", nameSchema);
 names.createIndexes();
 
+const project = mongoose.model("project", projectSchema);
+names.createIndexes();
+
 
 const collection = mongoose.model("collection", userData)
 collection.createIndexes();
-export { names, collection }
+export { names, collection,project }

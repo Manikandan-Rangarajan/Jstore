@@ -11,26 +11,22 @@ function Projects() {
 
   const [names, setNames] = useState([]);
   const navigate = useNavigate();
-
-  const User = "exampleUser"
-
+  
   const handleprice = async (name) => {
     try {
-      const Sname = name.Sname
-      const description = name.description
-      const price = name.price
       // Send a POST request to save the chosen Sname and Description
-      await axios.post('http://localhost:5000/pricing/api', {
-        Sname: Sname,
-        description: description,
-        price: price,
-        User: User,
-    });
+      const response = await axios.post('http://localhost:5000/pricing/api', {
+        Sname: name.Sname,
+        description: name.description,
+        price:name.price,
+      });
+
+      console.log('Data sent successfully:', response.data);
 
       // Navigate to the pricing page
       navigate('/pricing');
     } catch (error) {
-      console.error('There was an error writing the data!', error);
+      console.error('Error occurred during data submission:', error.response ? error.response.data : error.message);
     }
   };
 

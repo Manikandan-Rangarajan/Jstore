@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { collection, names } from "./dbConnection.js";
+import { collection, names, project } from "./dbConnection.js";
 import axios from 'axios';
 import dotenv from 'dotenv'
 
@@ -20,6 +20,9 @@ dotenv.config()
 // Define __dirname for static file serving
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
+let tempUser;
 
 // Serve static files from the 'dist' directory
 app.use(express.static(path.join(__dirname, '../dist')));
@@ -54,6 +57,7 @@ app.post('/signup', async (req, res) => {
 
     if (check) {
       res.status(409).json({ message: "User already exists" });
+      tempUser = user
     } else {
       res.status(201).json({ message: "User does not exists" });
     }
@@ -78,9 +82,11 @@ app.post('/sign-in', async (req, res) => {
     if (check) {
       
       res.status(409).json({ message: "User already exists" });
+      tempUser = user
     } else {
       await collection.insertMany([data]);
       res.status(201).json({ message: "User created successfully" });
+      tempUser = user
     }
   } catch (e) {
     res.status(500).json({ message: "Internal Server Error" });
@@ -88,30 +94,28 @@ app.post('/sign-in', async (req, res) => {
 });
 
 app.post('/pricing/api', async (req, res) => {
-  const { Sname, description } = req.body;
-
-  const data = {
-    Sname: Sname,
-    description: description,
-  };
-
+  const { Sname, description, price} = req.body;
+  const storedData = tempUser
   try {
-    console.log('Received data:', data); // Log the incoming data
+      // Step 2: Create and save a new Name document
+      const newName = new project({
+          Sname,
+          description,
+          price,
+          tempUser
+      });
 
-    // Check if the project already exists
-    const check = await collection.findOne({ Sname: Sname, description: description });
+      const savedName = await newName.save();
 
-    if (check) {
-      console.log('Project already exists:', check);
-      res.status(409).json({ message: "Project already exists in your Db" });
-    } else {
-      const insertResult = await collection.insertMany([data]);
-      console.log('Insert result:', insertResult);
-      res.status(201).json({ message: "Project added successfully" });
-    }
-  } catch (e) {
-    console.error('Internal Server Error:', e); // Log the error
-    res.status(500).json({ message: "Internal Server Error" });
+      // Find the user by username and update their projects array
+      await project.findOneAndUpdate(
+          { user: storedData },
+          { $push: { projects: savedName._id } }
+      );
+
+      res.status(201).json({ message: 'Project added and associated with user' });
+  } catch (err) {
+      res.status(500).json({ message: 'Error adding project', error: err });
   }
 });
 

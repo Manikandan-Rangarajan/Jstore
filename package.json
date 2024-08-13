@@ -28,6 +28,7 @@
     "dotenv": "^16.4.5",
     "eventemitter3": "^5.0.1",
     "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "framer-motion": "^11.3.21",
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.2",

@@ -33,7 +33,7 @@ const projectSchema = new mongoose.Schema({
     Sname: String,
     description: String,
     price: Number,
-    User: String
+    Username: String
 });
 
 const nameSchema = new mongoose.Schema({

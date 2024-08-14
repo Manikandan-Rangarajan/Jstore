@@ -16,6 +16,12 @@ app.use(cors());
 app.use(bodyParser.json());
 dotenv.config()
 
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'Jokerpanda26',
+  resave: false,
+  saveUninitialized: true,
+}));
 // async function getUserData(userId) {
 //   // Simulate a database call or any async operation
 //   try {
@@ -94,14 +100,16 @@ app.post('/signup', async (req, res) => {
 
 app.post('/sign-in', async (req, res) => {
   const { user, pwd } = req.body;
+  
 
   try {
     // Check if the user already exists
     const check = await collection.findOne({ user: user, password: pwd });
-
+    
     if (check) {
       // Assuming you're using sessions
       res.status(200).json({ message: "Sign-in successful", userId: check._id });
+      
       req.session.userId = check._id;
     } else {
       const newUser = await collection.insertMany([{ user, password: pwd }]);
@@ -114,13 +122,14 @@ app.post('/sign-in', async (req, res) => {
 });
 
 app.post('/pricing/api', async (req, res) => {
-  const { Sname, description, price} = req.body;
+  const { Sname, description, price,User} = req.body;
   try {
       // Step 2: Create and save a new Name document
       const newName = new project({
           Sname,
           description,
           price,
+          User,
       });
 
       const savedName = await newName.save();
@@ -135,6 +144,30 @@ app.post('/pricing/api', async (req, res) => {
   } catch (err) {
       res.status(500).json({ message: 'Error adding project', error: err });
   }
+});
+
+
+app.post('/pricing/usr', async (req, res) => {
+  const { User} = req.body;
+
+  try {
+    // Find and delete the specific project document
+    const deletedProject = await project.findByIdAndDelete(User);
+
+    if (!deletedProject) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    res.status(200).json({ message: 'Project successfully deleted' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting project', error: err });
+  }
+});
+
+
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 

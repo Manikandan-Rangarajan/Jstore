@@ -69,6 +69,7 @@ const Register = () => {
             if (error.response && error.response.status === 409) {
               alert('User exists');
               navigate('/home')
+              localStorage.setItem('userId', user);
             } else {
               alert('Error Signning In');
               console.error(error);

@@ -1,41 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import './AboutUs.css';
-import Navbar from './Navbar'
-import Panda from '../assets/Panda.jpg'
+import Navbar from './Navbar';
+import Panda from '../assets/Panda.jpg';
+import axios from 'axios';
 
 const ProfileDownload = () => {
   const [profileImage, setProfileImage] = useState('');
+  const [projects, setProjects] = useState([]);
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
     const fetchProfileImage = async () => {
-      setProfileImage('./zip.jpg');
-    };fetchProfileImage();
+      setProfileImage('./zip.jpg'); // Set your image source here
+    };
+    fetchProfileImage();
   }, []);
 
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = './P_assets.zip'; 
-    link.download = 'P_assets.zip';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  useEffect(() => {
+    axios.get('/pricing/api/money')
+      .then(response => {
+        setProjects(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the data!', error);
+      });
+  }, []);
+
+  const handleDownload = (pr) => {
+    window.open(pr.zip_url, '_blank');
   };
 
   return (
-    <div  style={{ backgroundImage: `url(${Panda})`}} className="min-h-screen w-full bg-no-repeat bg-cover" >
-    <Navbar/>
-    <div className="cont">
-      <div className="imgcont">
-        {profileImage ? (
-          <img src={profileImage} alt="Profile" className="profile-image" />
-        ) : (
-          <p>Loading...</p>
-        )}
-      </div>
-      <button className="download-button" onClick={handleDownload}>
-        Download Profile Zip
-      </button>
-    </div>
+    <div style={{ backgroundImage: `url(${Panda})` }} className="min-h-screen w-full bg-no-repeat bg-cover">
+      <Navbar />
+      {Array.isArray(projects) && projects.length > 0 ? (
+        projects.map((pr) => (
+          pr.User === userId && (
+            <div key={pr._id} className="cont">
+              <div className="imgcont">
+                {profileImage ? (
+                  <img src={profileImage} alt="Profile" className="profile-image" />
+                ) : (
+                  <p>Loading...</p>
+                )}
+              </div>
+              <button className="download-button" onClick={() => handleDownload(pr)}>
+                Download Profile Zip
+              </button>
+            </div>
+          )
+        ))
+      ) : (
+        <p>No data available</p>
+      )}
     </div>
   );
 };

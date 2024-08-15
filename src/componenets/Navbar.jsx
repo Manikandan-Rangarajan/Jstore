@@ -15,16 +15,16 @@ const Navbar = () => {
                 {/* Right side (Links) */}
                 <ul className="flex space-x-6">
                     <li>
-                        <Link to="/about-us" className="text-orange-200 hover:cursor-pointer hover:text-gray-400">About Us</Link>
+                        <Link to="/home" className="text-orange-200 hover:cursor-pointer hover:text-gray-400">Home</Link>
                     </li>
                     <li>
-                        <Link to="/home" className="text-orange-200 hover:cursor-pointer hover:text-gray-400">Home</Link>
+                        <Link to="/projects" className="text-orange-200 hover:cursor-pointer hover:text-gray-400">Projects</Link>
                     </li>
                     <li>
                         <Link to="/pricing" className="text-orange-200 hover:cursor-pointer hover:text-gray-400">Pricing</Link>
                     </li>
                     <li>
-                        <Link to="/projects" className="text-orange-200 hover:cursor-pointer hover:text-gray-400">Projects</Link>
+                        <Link to="/about-us" className="text-orange-200 hover:cursor-pointer hover:text-gray-400">My Projects</Link>
                     </li>
                     <li>
                         <Link to="/logout" className="text-orange-200 hover:cursor-pointer hover:text-gray-400">Logout</Link>

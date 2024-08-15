@@ -36,7 +36,8 @@ const projectSchema = new mongoose.Schema({
     User : {
         type: String,
         required: true,
-    }
+    },
+    zip_url: String,
 });
 
 const nameSchema = new mongoose.Schema({

@@ -73,6 +73,16 @@ app.get('/pricing/api/money', async (req, res) => {
   }
 });
 
+app.get('/about/api', async (req, res) => {
+  try {
+    const Name = await project.find(); // Retrieve all documents from the 'Name' collection
+    res.json(Name); // Send the data as JSON to the frontend
+  } catch (err) {
+    console.error('Error fetching data:', err); // Log detailed error
+    res.status(500).send('Server error');
+  }
+});
+
 
 app.post('/signup', async (req, res) => {
   const { user, pwd } = req.body;
@@ -122,7 +132,7 @@ app.post('/sign-in', async (req, res) => {
 });
 
 app.post('/pricing/api', async (req, res) => {
-  const { Sname, description, price,User} = req.body;
+  const { Sname, description, price,User,zip_url} = req.body;
   try {
       // Step 2: Create and save a new Name document
       const newName = new project({
@@ -130,6 +140,7 @@ app.post('/pricing/api', async (req, res) => {
           description,
           price,
           User,
+          zip_url,
       });
 
       const savedName = await newName.save();

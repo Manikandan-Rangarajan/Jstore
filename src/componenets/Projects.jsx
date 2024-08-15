@@ -29,6 +29,7 @@ function Projects() {
         description: name.description,
         price:name.price,
         User:userId,
+        zip_url: name.zip_url
       });
 
       console.log('Data sent successfully:', response.data);

@@ -19,8 +19,8 @@ const SignIn = () => {
     const [validName, setValidName] = useState(false);
     const [userFocus, setUserFocus] = useState(false);
 
-    const [className, setClassName] = useState('');
-    const [validClassName, setValidClassName] = useState(false);
+    const [classSec, setClassSec] = useState('');
+    const [validclassSec, setValidClassSec] = useState(false);
     const [classFocus, setClassFocus] = useState(false);
 
     const [pwd, setPwd] = useState('');
@@ -45,8 +45,8 @@ const SignIn = () => {
     }, [user]);
 
     useEffect(() => {
-        setValidClassName(CLASS_REGX3.test(className));
-    }, [className]);
+        setValidClassSec(CLASS_REGX3.test(classSec));
+    }, [classSec]);
 
     useEffect(() => {
         setValidPwd(PASS_REGX2.test(pwd));
@@ -61,14 +61,14 @@ const SignIn = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:5000/sign-in', { user, pwd });
+            const response = await axios.post('http://localhost:5000/sign-in', { user, pwd, classSec });
             
             if (response.status === 201) {
-              alert('User created successfully');
-              navigate('/home')
+              alert('User created successfully.Now pls login in the sign-in page');
+              navigate('/')
             }
           } catch (error) {
-              alert('Username Taken');
+              alert('error occured change the username and try');
               console.error(error);
           }
     }
@@ -106,6 +106,19 @@ const SignIn = () => {
                     Must begin with a letter.<br />
                     Letters, numbers, underscores, hyphens allowed.
                 </p>
+
+                <label className="font-bold m-[30px] mb-[0px]" htmlFor="confirm_pwd">Class & Section:</label>
+                <input
+                    type="text"
+                    id="classSec"
+                    onChange={(e) => setClassSec(e.target.value)}
+                    required
+                    aria-invalid={validMatch ? "false" : "true"}
+                    onFocus={() => setClassFocus(true)}
+                    onBlur={() => setClassFocus(false)}
+                    placeholder="Class section"
+                    className="border border-gray-600 rounded"
+                />
 
                 <label className="font-bold m-[30px] mb-[0px]" htmlFor="password">Password:
                     <span className={validPwd ? "valid" : "hidden"}><FontAwesomeIcon icon={faCheck}/></span>
@@ -150,6 +163,7 @@ const SignIn = () => {
                 <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "hidden"}>
                     Must match the first password input field.
                 </p>
+                
 
                 <button
                   type="submit"

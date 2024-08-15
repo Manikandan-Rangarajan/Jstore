@@ -109,27 +109,24 @@ app.post('/signup', async (req, res) => {
 
 
 app.post('/sign-in', async (req, res) => {
-  const { user, pwd } = req.body;
-  
+  const { user, pwd, classSec } = req.body;
 
   try {
     // Check if the user already exists
-    const check = await collection.findOne({ user: user, password: pwd });
+    const check = await collection.findOne({ user: user, password: pwd, classSec: classSec });
     
     if (check) {
-      // Assuming you're using sessions
-      res.status(200).json({ message: "Sign-in successful", userId: check._id });
-      
-      req.session.userId = check._id;
+      res.status(200).json({ message: "Sign-in successful" });
     } else {
-      const newUser = await collection.insertMany([{ user, password: pwd }]);
-      req.session.userId = newUser._id; // Store new user ID in session
-      res.status(201).json({ message: "User created successfully", userId: newUser._id });
+      await collection.insertMany([{ user, password: pwd, classSec: classSec }]);
+      res.status(201).json({ message: "User created successfully" });
     }
   } catch (e) {
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("Error during sign-in:", e); // Log the error to the console
+    res.status(500).json({ message: "Internal Server Error", error: e.message });
   }
 });
+
 
 app.post('/pricing/api', async (req, res) => {
   const { Sname, description, price,User,zip_url} = req.body;

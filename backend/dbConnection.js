@@ -21,6 +21,10 @@ const userData = new mongoose.Schema({
         type: String,
         required: true,
     },
+    classSec:{
+        type: String,
+        required: true,
+    },
     // Reference to nameSchema
     projects: [{
         type: mongoose.Schema.Types.ObjectId,

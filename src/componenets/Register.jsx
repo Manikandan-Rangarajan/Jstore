@@ -77,6 +77,10 @@ const Register = () => {
           }
     }
 
+    const account =  ()=>{
+        navigate("/sign-in")
+    }
+
     return (
         <> 
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-xl">
@@ -162,6 +166,8 @@ const Register = () => {
                     Sign Up
                 </button>
             </form>
+
+            <p className="m-[10px]">Don't have an account? <button className="text-blue-500  hover:text-orange-400" onClick={()=>account()}>Click here</button></p>
         </div>
      </>
     );

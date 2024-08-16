@@ -3,10 +3,20 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { collection, names, project } from "./dbConnection.js";
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 import session from 'express-session';
-import { MongoClient, ServerApiVersion } from 'mongodb';
+import {
+  connectToDatabase,
+  createUser,
+  findUser,
+  createProject,
+  findProjects,
+  createName,
+  findNames,
+  client,
+  findUserProjects,
+  createUserProjects
+} from './dbConnection.js';
 
 // Initialize Express app
 const app = express();
@@ -15,27 +25,10 @@ const port = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-dotenv.config()
-
+dotenv.config();
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'Jokerpanda26',
-  resave: false,
-  saveUninitialized: true,
-}));
-// async function getUserData(userId) {
-//   // Simulate a database call or any async operation
-//   try {
-//     const userData = await mongoose.model('collection').findById(userId);
-//     return userData;
-//   } catch (error) {
-//     console.error('Error fetching user data:', error);
-//     throw error;
-//   }
-// }
-
-app.use(session({
-  secret: 'your_secret_key',
   resave: false,
   saveUninitialized: true,
 }));
@@ -44,177 +37,169 @@ app.use(session({
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
+// Connect to the database
+connectToDatabase().catch(err => {
+  console.error('Database connection failed:', err);
+  process.exit(1);
+});
 
 // Serve static files from the 'dist' directory
 app.use(express.static(path.join(__dirname, '../dist')));
 
-
-// MongoDB connection setup
-// const uri = process.env.MONGODB_URI || "mongodb+srv://Manikandan:JokerPanda26@jstore.udxro.mongodb.net/?retryWrites=true&w=majority&appName=Jstore";
-// const client = new MongoClient(uri, {
-//   serverApi: {
-//     version: ServerApiVersion.v1,
-//     strict: true,
-//     deprecationErrors: true,
-//   }
-// });
-
-// async function connectToDatabase() {
-//   try {
-//     await client.connect();
-//     await client.db("admin").command({ ping: 1 });
-//     console.log("Pinged your deployment. You successfully connected to MongoDB!");
-//   } catch (error) {
-//     console.error("MongoDB connection error:", error);
-//     process.exit(1); // Exit the process with an error code
-//   }
-// }
-
-// // Call the connectToDatabase function and then start the server
-// connectToDatabase().then(() => {
-//   app.listen(port, () => {
-//     console.log(`Server is running on port ${port}`);
-//   });
-// });
-
-
 // Serve the main HTML file
-app.get('/', cors(), (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
+// Get all projects
 app.get('/projects/api', async (req, res) => {
   try {
-    const name = await names.find(); // Retrieve all documents from the 'Name' collection
-    res.json(name); // Send the data as JSON to the frontend
+    const db = client.db('Jstore');
+    const projects = await findNames({});
+    res.json(projects);
   } catch (err) {
-    console.error('Error fetching data:', err); // Log detailed error
+    console.error('Error fetching projects:', err);
     res.status(500).send('Server error');
   }
 });
 
+// Get all pricing data
 app.get('/pricing/api/money', async (req, res) => {
   try {
-    const name = await project.find(); // Retrieve all documents from the 'Name' collection
-    res.json(name); // Send the data as JSON to the frontend
+    const db = client.db('Jstore');
+    const pricingData = await findProjects({});
+    res.json(pricingData);
   } catch (err) {
-    console.error('Error fetching data:', err); // Log detailed error
+    console.error('Error fetching pricing data:', err);
     res.status(500).send('Server error');
   }
 });
 
+app.get('/pricing/api/projects', async (req, res) => {
+  try {
+    const db = client.db('Jstore');
+    const pricingData = await findProjects({});
+    res.json(pricingData);
+  } catch (err) {
+    console.error('Error fetching pricing data:', err);
+    res.status(500).send('Server error');
+  }
+});
+
+// Get about data
 app.get('/about/api', async (req, res) => {
   try {
-    const Name = await project.find(); // Retrieve all documents from the 'Name' collection
-    res.json(Name); // Send the data as JSON to the frontend
+    const db = client.db('Jstore');
+    const aboutData = await findProjects({});
+    res.json(aboutData);
   } catch (err) {
-    console.error('Error fetching data:', err); // Log detailed error
+    console.error('Error fetching about data:', err);
     res.status(500).send('Server error');
   }
 });
 
-
+// Sign up
 app.post('/signup', async (req, res) => {
   const { user, pwd } = req.body;
-
-  const data = {
-    user: user,
-    password: pwd,
-  };
-
   try {
-    // Check if the user already exists
-    const check = await collection.findOne({ user: user, password:pwd });
-
-    if (check) {
+    const existingUser = await findUser({ user, password: pwd });
+    if (existingUser) {
       res.status(409).json({ message: "Username already taken" });
-      return check.user
     } else {
-      res.status(201).json({ message: "User does not exists" });
+      await createUser({ user, password: pwd });
+      res.status(201).json({ message: "User created successfully" });
     }
   } catch (e) {
+    console.error('Error during signup:', e);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-
+// Sign in
 app.post('/sign-in', async (req, res) => {
   const { user, pwd, classSec } = req.body;
-
   try {
-    // Check if the user already exists
-    const check = await collection.findOne({ user: user, password: pwd, classSec: classSec });
-    
-    if (check) {
+    const existingUser = await findUser({ user, password: pwd, classSec });
+    if (existingUser) {
       res.status(200).json({ message: "Sign-in successful" });
     } else {
-      await collection.insertMany([{ user, password: pwd, classSec: classSec }]);
+      await createUser({ user, password: pwd, classSec });
       res.status(201).json({ message: "User created successfully" });
     }
   } catch (e) {
-    console.error("Error during sign-in:", e); // Log the error to the console
+    console.error("Error during sign-in:", e);
     res.status(500).json({ message: "Internal Server Error", error: e.message });
   }
 });
 
 
+// Add pricing data
 app.post('/pricing/api', async (req, res) => {
-  const { Sname, description, price,User,zip_url} = req.body;
+  const { Sname, description, price, User, zip_url } = req.body;
   try {
-      // Step 2: Create and save a new Name document
-      const newName = new project({
-          Sname,
-          description,
-          price,
-          User,
-          zip_url,
-      });
+    const newProject = { Sname, description, price, User, zip_url };
+    const result = await createProject(newProject);
 
-      const savedName = await newName.save();
+    await client.db('Jstore').collection('collection').updateOne(
+      { user: User },
+      { $push: { projects: result.insertedId } }
+    );
 
-      //Find the user by username and update their projects array
-      await project.findOneAndUpdate(
-          { $push: { projects: savedName._id } }
-      );
-    //  await collection.findByIdAndUpdate(userId, { $push: { projects: savedProject._id } });
-
-      res.status(201).json({ message: 'Project added and associated with user' });
+    res.status(201).json({ message: 'Project added and associated with user' });
   } catch (err) {
-      res.status(500).json({ message: 'Error adding project', error: err });
+    console.error('Error adding project:', err);
+    res.status(500).json({ message: 'Error adding project', error: err });
   }
 });
 
-
+// Delete user
 app.post('/pricing/usr', async (req, res) => {
-  const { User} = req.body;
-
+  const { User } = req.body;
   try {
-    // Find and delete the specific project document
-    const deletedProject = await project.findByIdAndDelete(User);
+    const db = client.db('Jstore');
+    const deletedProject = await db.collection('project').findOneAndDelete({ User });
 
-    if (!deletedProject) {
+    if (!deletedProject.value) {
       return res.status(404).json({ message: 'Project not found' });
     }
 
     res.status(200).json({ message: 'Project successfully deleted' });
   } catch (err) {
+    console.error('Error deleting project:', err);
     res.status(500).json({ message: 'Error deleting project', error: err });
+  }
+});
+
+//adding projects permanently to user db
+app.post('/pricing/usrproject', async (req, res) => {
+  const { Sname, description, price, User, zip_url } = req.body;
+  try {
+    const db = client.db('Jstore');
+    const existingUser = await findUserProjects({ User });
+
+    if (existingUser) {
+      res.status(409).json({ message: "Project already exists" });
+    } else {
+      await createUserProjects({ User, zip_url});
+      res.status(201).json({ message: "User project added successfully" });
+    }
+  } catch (e) {
+    console.error("Error during sign-in:", e);
+    res.status(500).json({ message: "Internal Server Error", error: e.message });
   }
 });
 
 
 
+// Serve other pages
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
-
 
 // Handle 404 errors
 app.use((req, res) => {
   res.status(404).send('404 - Not Found');
 });
-
 
 // Start the server
 app.listen(port, () => {

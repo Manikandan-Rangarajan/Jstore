@@ -25,14 +25,27 @@ const Pricing = () => {
     try {
 
       console.log('Sending data:', {
-        User: pr._id // Ensure the key matches what the backend expects
+        User:  userId// Ensure the key matches what the backend expects
     });
       // Send a POST request to save the chosen Sname and Description
       const response = await axios.post('http://localhost:5000/pricing/usr', {
-        User: pr._id,
+        name: pr.Sname,
+        description: pr.description,
+        price:pr.price,
+        User:userId,
+        zip_url: pr.zip_url
+      });
+
+      const resp = await axios.post('http://localhost:5000/pricing/usrproject', {
+        name: pr.Sname,
+        description: pr.description,
+        price:pr.price,
+        User:userId,
+        zip_url: pr.zip_url
       });
 
       console.log('Data sent successfully:', response.data);
+      console.log('Data sent successfully:', resp.data);
 
       // Navigate to the pricing page
       alert('Qr deleted Successfully choose other projects for buying')

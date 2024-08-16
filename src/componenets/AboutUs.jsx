@@ -17,7 +17,7 @@ const ProfileDownload = () => {
   }, []);
 
   useEffect(() => {
-    axios.get('/pricing/api/money')
+    axios.get('/pricing/api/projects')
       .then(response => {
         setProjects(response.data);
       })

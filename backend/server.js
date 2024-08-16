@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import { collection, names, project } from "./dbConnection.js";
 import dotenv from 'dotenv'
 import session from 'express-session';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 
 // Initialize Express app
 const app = express();
@@ -47,6 +48,36 @@ const __dirname = path.dirname(__filename);
 
 // Serve static files from the 'dist' directory
 app.use(express.static(path.join(__dirname, '../dist')));
+
+
+// MongoDB connection setup
+// const uri = process.env.MONGODB_URI || "mongodb+srv://Manikandan:JokerPanda26@jstore.udxro.mongodb.net/?retryWrites=true&w=majority&appName=Jstore";
+// const client = new MongoClient(uri, {
+//   serverApi: {
+//     version: ServerApiVersion.v1,
+//     strict: true,
+//     deprecationErrors: true,
+//   }
+// });
+
+// async function connectToDatabase() {
+//   try {
+//     await client.connect();
+//     await client.db("admin").command({ ping: 1 });
+//     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+//   } catch (error) {
+//     console.error("MongoDB connection error:", error);
+//     process.exit(1); // Exit the process with an error code
+//   }
+// }
+
+// // Call the connectToDatabase function and then start the server
+// connectToDatabase().then(() => {
+//   app.listen(port, () => {
+//     console.log(`Server is running on port ${port}`);
+//   });
+// });
+
 
 // Serve the main HTML file
 app.get('/', cors(), (req, res) => {

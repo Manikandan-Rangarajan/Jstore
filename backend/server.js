@@ -14,8 +14,8 @@ import {
   createName,
   findNames,
   client,
-  findUserProjects,
-  createUserProjects
+  findClientProjects,
+  createClientProjects
 } from './dbConnection.js';
 
 // Initialize Express app
@@ -68,6 +68,7 @@ app.get('/pricing/api/money', async (req, res) => {
   try {
     const db = client.db('Jstore');
     const pricingData = await findProjects({});
+    console.log(pricingData)
     res.json(pricingData);
   } catch (err) {
     console.error('Error fetching pricing data:', err);
@@ -77,44 +78,17 @@ app.get('/pricing/api/money', async (req, res) => {
 
 app.get('/pricing/api/projects', async (req, res) => {
   try {
-    const userId = req.query.userId;
-
-    // Access the database and collections
     const db = client.db('Jstore');
-
-    // Find the user with the provided username
-    const userDocument = await db.collection('UserProjects').findOne({ user: userId });
-
-    if (!userDocument) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Retrieve the projects array from the user document
-    const projectIds = userDocument.projects;
-
-    // Fetch the projects from the projects collection based on the projectIds
-    const projects = await db.collection('projects').find({ _id: { $in: projectIds } }).toArray();
-
-    res.json(projects);
+    const pricingData = await findProjects({});
+    console.log(pricingData)
+    res.json(pricingData);
   } catch (err) {
-    console.error('Error fetching projects:', err);
+    console.error('Error fetching pricing data:', err);
     res.status(500).send('Server error');
   }
 });
 
 
-
-// Get about data
-app.get('/about/api', async (req, res) => {
-  try {
-    const db = client.db('Jstore');
-    const aboutData = await findProjects({});
-    res.json(aboutData);
-  } catch (err) {
-    console.error('Error fetching about data:', err);
-    res.status(500).send('Server error');
-  }
-});
 
 // Sign up
 app.post('/signup', async (req, res) => {
@@ -191,21 +165,42 @@ app.post('/pricing/usr', async (req, res) => {
 //adding projects permanently to user db
 app.post('/pricing/usrproject', async (req, res) => {
   const { Sname, description, price, User, zip_url } = req.body;
+  
   try {
     const db = client.db('Jstore');
-    const existingUser = await findUserProjects({ User });
+    
+    // Check if the user exists
+    const existingUser = await db.collection('UserProjects').findOne({ user: User });
 
     if (existingUser) {
-      res.status(409).json({ message: "Project already exists" });
+      //Check if the project already exists for the user
+      const projectExists = existingUser.zip_url.some(projectId => projectId === zip_url);
+      
+      if (projectExists) {
+        return res.status(409).json({ message: "Project already exists" });
+      }
+      
+      // Limit the number of projects to 2
+      if (existingUser.projects.length >= 2) {
+        return res.status(400).json({ message: "User cannot have more than 2 projects" });
+      }
+      
+      res.status(201).json({ message: "User project added successfully" });
     } else {
-      await createUserProjects({ User, zip_url});
+      // Create a new user with the project
+      await db.collection('UserProjects').insertOne({
+        user: User,
+        zip_url: [zip_url]
+      });
+      
       res.status(201).json({ message: "User project added successfully" });
     }
   } catch (e) {
-    console.error("Error during sign-in:", e);
+    console.error("Error during project addition:", e);
     res.status(500).json({ message: "Internal Server Error", error: e.message });
   }
 });
+
 
 
 

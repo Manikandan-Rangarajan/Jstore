@@ -32,11 +32,10 @@ async function createIndexes() {
     const nameCollection = db.collection('names');
     await nameCollection.createIndex({ Sname: 1 });
 
-    const UserProjects = db.collection('project');
-    await UserProjects.createIndex({ Sname: 1 });
+    const ClientProjects = db.collection('UserProjects');
+    await ClientProjects.createIndex({ Sname: 1 });
 }
 
-// Define operations
 
 // User operations
 async function createUser(userData) {
@@ -84,17 +83,17 @@ async function findNames(query) {
 }
 
 // Name operations
-async function createUserProjects(nameData) {
+async function createClientProjects(nameData) {
     const db = client.db();
-    const UserProjects = db.collection('UserProjects');
-    const result = await UserProjects.insertOne(nameData);
+    const ClientProjects = db.collection('UserProjects');
+    const result = await ClientProjects.insertOne(nameData);
     return result;
 }
 
-async function findUserProjects(query) {
+async function findClientProjects(query) {
     const db = client.db();
-    const UserProjects = db.collection('UserProjects');
-    const userprojects = await UserProjects.find(query).toArray();
+    const ClientProjects = db.collection('UserProjects');
+    const userprojects = await ClientProjects.find(query).toArray();
     return userprojects;
 }
 
@@ -106,7 +105,7 @@ export {
     findProjects,
     createName,
     findNames,
-    createUserProjects,
-    findUserProjects,
+    createClientProjects,
+    findClientProjects,
     client
 };

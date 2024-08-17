@@ -69,11 +69,16 @@ const Register = () => {
             if (error.response && error.response.status === 409) {
               alert('User exists');
               navigate('/home')
+              localStorage.setItem('userId', user);
             } else {
               alert('Error Signning In');
               console.error(error);
             }
           }
+    }
+
+    const account =  ()=>{
+        navigate("/sign-in")
     }
 
     return (
@@ -161,6 +166,8 @@ const Register = () => {
                     Sign Up
                 </button>
             </form>
+
+            <p className="m-[10px]">Don't have an account? <button className="text-blue-500  hover:text-orange-400" onClick={()=>account()}>Click here</button></p>
         </div>
      </>
     );

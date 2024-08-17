@@ -11,14 +11,25 @@ function Projects() {
 
   const [names, setNames] = useState([]);
   const navigate = useNavigate();
+  const userId = localStorage.getItem('userId');
+  console.log(userId)
   
   const handleprice = async (name) => {
     try {
+
+      console.log('Sending data:', {
+        Sname: name.Sname,
+        description: name.description,
+        price: name.price,
+        User: userId // Ensure the key matches what the backend expects
+    });
       // Send a POST request to save the chosen Sname and Description
       const response = await axios.post('http://localhost:5000/pricing/api', {
         Sname: name.Sname,
         description: name.description,
         price:name.price,
+        User:userId,
+        zip_url: name.zip_url
       });
 
       console.log('Data sent successfully:', response.data);

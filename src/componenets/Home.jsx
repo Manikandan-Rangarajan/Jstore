@@ -10,27 +10,24 @@ function home() {
   return (
     <>
      <Navbar/>
-       <div style={{ backgroundImage: `url(${Panda})` }} className="bg-no-repeat bg-cover flex flex-col items-center justify-between min-h-screen bg-gray-100 text-center">
-      <div className="flex flex-wrap gap-6 justify-center mt-5">
-        <div  className={`w-[650px] h-[400px] m-[20px] backdrop-blur-xxl bg-gray-800 rounded-lg shadow-lg flex flex-wrap items-center justify-center text-lg text-orange-200 text-2xl transform hover:rotate-x-12 hover:rotate-y-12 transition-transform duration-300`}>
-          <ul className='opacity-100 font-bold text-2xl'>
+       <div style={{ backgroundImage: `url(${Panda})` }} className="bg-no-repeat bg-cover flex flex-col items-center justify-between min-h-screen bg-gray-50 text-center">
+      <div className="flex flex-wrap gap-6 justify-center mt-5 text-justify mt-20" >
+      <div class="w-[650px] h-[400px] m-[20px] p-6 bg-white/10 backdrop-blur-3xl rounded-lg shadow-lg flex flex-wrap items-center justify-center text-lg text-orange-200 text-2xl transform hover:scale-105 hover:shadow-2xl hover:backdrop-blur-[40px] transition-all duration-300 ease-in-out border border-white/20">
+          <ul className='opacity-100 font-bold text-2xl '>
             <li><p>Welcome to Jstore, your one-stop destination for affordable and innovative projects tailored to your academic needs. We specialize in providing high-quality mini-projects and full-scale projects
              that are crafted with precision and care. Whether you're looking to get 
             ahead in your coursework or seeking inspiration for your next big idea, Jstore has you covered.</p></li>
           </ul>
         </div>
-        <div  className={`w-[650px] h-[400px] m-[20px] backdrop-blur-xxl bg-gray-800 rounded-lg shadow-lg flex flex-col items-center justify-center text-lg text-orange-200 text-2xl transform hover:rotate-x-12 hover:rotate-y-12 transition-transform duration-300`}>
-        <ul className='opacity-100 font-bold text-2xl'>
-            <li><p>At Jstore, we understand the value of practical experience in education. That's why we offer a range of products that cater to different academic requirements. Our mini-project's code and user documentaion, priced at just 100 INR,
-             are perfect for students looking for quick, impactful solutions. For those in need of more comprehensive projects, we offer full project's code and user documentaion at an unbeatable price of 350 INR. Each product
-             is designed to not only meet but exceed academic standards, ensuring that you stand out in your studies.</p></li>
+        <div class="w-[650px] h-[400px] m-[20px] p-6 bg-white/10 backdrop-blur-3xl rounded-lg shadow-lg flex flex-wrap items-center justify-center text-lg text-orange-200 text-2xl transform hover:scale-105 hover:shadow-2xl hover:backdrop-blur-[40px] transition-all duration-300 ease-in-out border border-white/20">
+        <ul className='opacity-100 font-bold text-2xl '>
+            <li><p>At Jstore, we offer products tailored to academic needs. Our mini-projects, including code and documentation, are available for just 100 INR, ideal for quick, effective solutions. For more comprehensive projects, get full code and documentation at 350 INR. Each product is designed to meet and exceed academic standards, helping you excel in your studies.</p></li>
           </ul>
         </div>
-        <div className={`w-[650px] h-[400px] m-[20px] backdrop-blur-xxl bg-gray-800 rounded-lg shadow-lg flex flex-col items-center justify-center text-lg text-orange-200 text-2xl transform hover:rotate-x-12 hover:rotate-y-12 transition-transform duration-300`}>
+        <div class="w-[650px] h-[400px] m-[20px] p-6 bg-white/10 backdrop-blur-3xl rounded-lg shadow-lg flex flex-wrap items-center justify-center text-lg text-orange-200 text-2xl transform hover:scale-105 hover:shadow-2xl hover:backdrop-blur-[40px] transition-all duration-300 ease-in-out border border-white/20">
         <ul className='opacity-100 font-bold text-2xl'>
           <li><p>
-           Behind Jstore is the creative force of JokerPanda, a group dedicated to pushing the boundaries of conventional education. Despite our products not being officially approved by college staff, our focus remains on delivering value and innovation to students who are eager to learn and grow. At Jstore, you’ll
-           find the tools and resources you need to excel in your academic journey, all while keeping your budget in check.</p></li>
+          Jstore is powered by JokerPanda, a creative team dedicated to pushing the boundaries of traditional education. Although our products aren't officially approved by college staff, we focus on delivering value and innovation to students eager to learn and grow. At Jstore, you’ll find the tools and resources to excel in your academic journey, all while keeping your budget in check.</p></li>
           </ul>
         </div>
       </div>

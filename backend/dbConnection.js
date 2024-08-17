@@ -93,7 +93,7 @@ async function createUserProjects(nameData) {
 
 async function findUserProjects(query) {
     const db = client.db();
-    const UserProjects = db.collection('UserProject');
+    const UserProjects = db.collection('UserProjects');
     const userprojects = await UserProjects.find(query).toArray();
     return userprojects;
 }

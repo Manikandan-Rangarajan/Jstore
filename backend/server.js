@@ -77,14 +77,32 @@ app.get('/pricing/api/money', async (req, res) => {
 
 app.get('/pricing/api/projects', async (req, res) => {
   try {
+    const userId = req.query.userId;
+
+    // Access the database and collections
     const db = client.db('Jstore');
-    const pricingData = await findProjects({});
-    res.json(pricingData);
+
+    // Find the user with the provided username
+    const userDocument = await db.collection('UserProjects').findOne({ user: userId });
+
+    if (!userDocument) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Retrieve the projects array from the user document
+    const projectIds = userDocument.projects;
+
+    // Fetch the projects from the projects collection based on the projectIds
+    const projects = await db.collection('projects').find({ _id: { $in: projectIds } }).toArray();
+
+    res.json(projects);
   } catch (err) {
-    console.error('Error fetching pricing data:', err);
+    console.error('Error fetching projects:', err);
     res.status(500).send('Server error');
   }
 });
+
+
 
 // Get about data
 app.get('/about/api', async (req, res) => {

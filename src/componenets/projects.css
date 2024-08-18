@@ -83,3 +83,11 @@
     font-family: Arial, sans-serif;
   }
   
+  /* Add this to your projects.css file */
+.product-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-2 pt-4;
+}
+
+.product-card {
+  @apply bg-orange-200 flex flex-col justify-between items-center p-2 pt-4 rounded-lg shadow-md h-[250px] w-full max-w-[250px];
+}

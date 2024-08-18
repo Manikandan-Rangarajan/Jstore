@@ -79,7 +79,6 @@ const Pricing = () => {
             <li className='text-2xl'>NOTE</li>
             <li>Please update the payment details in the form by clicking the Paid button.</li>
             <li>Delete the current Payment QR code from this page only after downloading the project zip.</li>
-            <li>Delete the current Payment QR code to add a new project's QR code.</li>
           </ul>
         </div>
         {Array.isArray(price) ? (

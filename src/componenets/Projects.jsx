@@ -59,11 +59,11 @@ function Projects() {
   return (
     <div style={{ backgroundImage: `url(${Panda})` }} className="min-h-screen w-full bg-no-repeat bg-cover">
       <Navbar />
-      <div className="product-grid">
+      <div className="product-grid mt-[80px] px-4 flex flex-wrap justify-center gap-10">
         {Array.isArray(names) ? (
           names.map((name) => (
-            <div className="product-card bg-orange-200 flex flex-col justify-center items-center" key={name._id}>
-              <h3 className='font-extrabold text-2xl font-mono'>{name.Sname}</h3>
+            <div className="product-card bg-orange-200 flex flex-col justify-center items-center w-[250px] h-[300px] p-4 rounded-lg shadow-lg" key={name._id}>
+              <h3 className='font-extrabold text-2xl font-mono text-center'>{name.Sname}</h3>
               <p>{name.description}</p>
               <p className='font-bold'>Price: {name.price} Rs</p>
               <button onClick={() => handleprice(name)} className='text-white bg-black rounded-lg w-[100px] h-[50px] hover:text-orange-200 hover:bg-white'>Select</button>

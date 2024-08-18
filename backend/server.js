@@ -55,7 +55,7 @@ app.get('/', (req, res) => {
 app.get('/projects/api', async (req, res) => {
   try {
     const db = client.db('Jstore');
-    const projects = await findnNames({});
+    const projects = await findNames({});
     res.json(projects);
   } catch (err) {
     console.error('Error fetching projects:', err);

@@ -29,7 +29,7 @@ const Navbar = () => {
                         <Link to="/logout" className="text-orange-200 hover:cursor-pointer hover:text-gray-400">Logout</Link>
                     </li>
                     <li>
-                        <Link to="/" className="text-orange-200 hover:cursor-pointer hover:text-gray-400">Register</Link>
+                        <Link to="/sign-in" className="text-orange-200 hover:cursor-pointer hover:text-gray-400">Register</Link>
                     </li>
                 </ul>
             </div>

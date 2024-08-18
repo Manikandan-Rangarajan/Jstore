@@ -1,46 +1,39 @@
-// src/components/UPIPaymentPage.jsx
-
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode.react';
-import Navbar from './Navbar'
-import Panda from '../assets/Panda.jpg'
-import axios from 'axios'
-import { redirect, useNavigate } from "react-router-dom";
+import Navbar from './Navbar';
+import Panda from '../assets/Panda.jpg';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const Pricing = () => {
-
-  const [price, setPrice] = useState([])
-
+  const [price, setPrice] = useState([]);
   const upiID = 'username270904-1@okaxis'; // Replace with actual UPI ID
   const payeeName = 'Manikandan Rangarajan'; // Replace with actual Payee Name
   const amount = 100; // Replace with actual amount
   const message = 'Payment for test'; // Optional payment message
   const userId = localStorage.getItem('userId');
-  console.log(userId)
+  console.log(userId);
   const navigate = useNavigate();
-  
 
-
-  const handleDelete = async (pr)=>{
+  const handleDelete = async (pr) => {
     try {
-
       console.log('Sending data:', {
-        User:  userId// Ensure the key matches what the backend expects
-    });
+        User: userId // Ensure the key matches what the backend expects
+      });
       // Send a POST request to save the chosen Sname and Description
       const response = await axios.post('http://localhost:5000/pricing/usr', {
         name: pr.Sname,
         description: pr.description,
-        price:pr.price,
-        User:userId,
+        price: pr.price,
+        User: userId,
         zip_url: pr.zip_url
       });
 
       const resp = await axios.post('http://localhost:5000/pricing/usrproject', {
         name: pr.Sname,
         description: pr.description,
-        price:pr.price,
-        User:userId,
+        price: pr.price,
+        User: userId,
         zip_url: pr.zip_url
       });
 
@@ -48,50 +41,47 @@ const Pricing = () => {
       console.log('Data sent successfully:', resp.data);
 
       // Navigate to the pricing page
-      alert('Qr deleted Successfully choose other projects for buying')
-      navigate('/projects');
+      alert('QR deleted successfully. Choose other projects for buying.');
+
+      // Refresh the page after successful delete operation
+      window.location.reload(false);
+      
     } catch (error) {
       console.error('Error occurred during data submission:', error.response ? error.response.data : error.message);
     }
-  }
-  
+  };
 
   useEffect(() => {
     // Fetch data from the API
     axios.get('/pricing/api/money')
-    .then(response => {
+      .then(response => {
         console.log('API Response:', response.data); // Check the structure of the response
         setPrice(response.data);
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         console.error('There was an error fetching the data!', error);
-    });
+      });
+  }, []);
 
-}, []);
-
-const handlePaid = () => {
-  // Handle payment logic here
-  alert('Payment recorded! Please update the payment details in the form.');
-  window.open('https://forms.gle/pCYkJCUsDQARHNwQA', '_blank');
-  navigate('/MyProjects');
-};
-
-
-// const upiLink = `upi://pay?pa=${upiID}&pn=${payeeName}&am=${price}&tn=${message}`;
-
+  const handlePaid = () => {
+    // Handle payment logic here
+    alert('Payment recorded! Please update the payment details in the form.');
+    window.open('https://forms.gle/pCYkJCUsDQARHNwQA', '_blank');
+    navigate('/MyProjects');
+  };
 
   return (
     <>
-    <Navbar/>
-    <div  style={{ backgroundImage: `url(${Panda})` }} className="min-h-screen w-full bg-no-repeat bg-cover overflow-hidden flex flex-wrap gap-10 items-center justify-center bg-gray-100 p-4">
-    <div className={`w-full h-[100px] m-[20px] backdrop-blur-xxl bg-gray-800 rounded-lg shadow-lg flex flex-wrap items-center justify-center text-orange-200 transform hover:rotate-x-12 hover:rotate-y-12 transition-transform duration-300`}>
-      <ul className = 'opacity-100 font-bold text-xl flex flex-col flex-wrap justify-start items-center'>
-        <li className = 'text-2xl'>NOTE</li>
-        <li>Please Update the payment details in the gform by clicking in the Paid button.</li>
-        <li>Delete the current Payment Qr code to add new Project's Qr code.</li>
-      </ul>
-    </div>
-    {Array.isArray(price) ? (
+      <Navbar />
+      <div style={{ backgroundImage: `url(${Panda})` }} className="min-h-screen w-full bg-no-repeat bg-cover overflow-hidden flex flex-wrap gap-10 items-center justify-center bg-gray-100 p-4 pt-20">
+        <div className={`w-full h-[140px] m-[20px] backdrop-blur-xxl bg-gray-800 rounded-lg shadow-lg flex flex-wrap items-center justify-center text-orange-200 transform hover:rotate-x-12 hover:rotate-y-12 transition-transform duration-300`}>
+          <ul className='opacity-100 font-bold text-xl flex flex-col flex-wrap justify-start items-center'>
+            <li className='text-2xl'>NOTE</li>
+            <li>Please update the payment details in the form by clicking the Paid button.</li>
+            <li>Delete the current Payment QR code from this page only after downloading the project zip.</li>
+          </ul>
+        </div>
+        {Array.isArray(price) ? (
           price.map((pr) => {
             if (pr.User === userId) {
               const upiLink = `upi://pay?pa=${pr.User}@okaxis&pn=${payeeName}&am=${pr.price}&tn=${message}`;
@@ -110,7 +100,7 @@ const handlePaid = () => {
                   </div>
                   <button
                     className='text-white bg-black rounded-lg w-[100px] h-[50px] m-[10px] hover:text-orange-200 hover:bg-white'
-                     onClick={() => handleDelete(pr)}
+                    onClick={() => handleDelete(pr)}
                   >
                     Delete
                   </button>

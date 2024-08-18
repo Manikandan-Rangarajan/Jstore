@@ -26,7 +26,7 @@ function Projects() {
       // Send a POST request to save the chosen Sname and Description
       const response = await axios.post('http://localhost:5000/pricing/api', {
         Sname: name.Sname,
-        description: name.description,
+        description: name.description,  
         price:name.price,
         User:userId,
         zip_url: name.zip_url

@@ -5,7 +5,7 @@ import Register from './componenets/Register'
 import Projects from './componenets/Projects'
 import Navbar from './componenets/Navbar'
 import Pricing from './componenets/Pricing'
-import AboutUs from './componenets/AboutUs'
+import MyProjects from './componenets/MyProjects'
 import Home from './componenets/Home'
 import Logout from './componenets/Logout'
 import React from 'react';
@@ -25,7 +25,7 @@ function App() {
        
           <Route path="/logout" element={<Logout />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/MyProjects" element={<MyProjects />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/" element={<Register />} />

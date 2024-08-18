@@ -73,7 +73,7 @@ const handlePaid = () => {
   // Handle payment logic here
   alert('Payment recorded! Please update the payment details in the form.');
   window.open('https://forms.gle/pCYkJCUsDQARHNwQA', '_blank');
-  navigate('/about-us');
+  navigate('/MyProjects');
 };
 
 

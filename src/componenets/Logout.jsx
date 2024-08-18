@@ -1,21 +1,39 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 function Logout() {
-  const navigate = useNavigate();
-
   useEffect(() => {
     
-    localStorage.removeItem('userId');
-    // Redirect to the signup page after logout
-    window.location.href = `${window.location.origin}/`;  
-  }, [navigate]);
+    localStorage.removeItem('userId'); 
+    localStorage.removeItem('authToken');
+
+    
+    const timer = setTimeout(() => {
+      window.location.href = `${window.location.origin}/`;
+    }, 1500); 
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div>
-      <h2>Logging you out...</h2>
+    <div style={styles.container}>
+      <h2 style={styles.message}>Logging you out...</h2>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    height: '100vh', 
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0', 
+  },
+  message: {
+    fontSize: '2rem', 
+    fontWeight: 'bold',
+    color: '#333', 
+  },
+};
 
 export default Logout;
